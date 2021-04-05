@@ -4,6 +4,7 @@ const { bootstrapField, createProductForm } = require('../forms');
 
 const { Tea } = require("../models")
 
+// READ ALL
 router.get("/", async (req, res) => {
     let teas = await Tea.collection().fetch();
     res.render("products/index", {
@@ -11,6 +12,9 @@ router.get("/", async (req, res) => {
     })
 })
 
+
+// CREATE
+// GET
 router.get("/create", async (req, res) => {
     const productForm = createProductForm();
     res.render("products/create", {
@@ -18,6 +22,7 @@ router.get("/create", async (req, res) => {
     })
 })
 
+// POST
 router.post("/create", async (req, res) => {
     const productForm = createProductForm();
     productForm.handle(req,{
@@ -33,6 +38,30 @@ router.post("/create", async (req, res) => {
             })
         }
     })
+})
+
+// DELETE
+// GET
+router.get("/:product_id/delete", async(req,res)=>{
+    const product = await Tea.where({
+        "id": req.params.product_id
+    }).fetch({
+        require: true
+    })
+    res.render("products/delete",{
+        "product": product.toJSON()
+    })
+})
+
+// POST
+router.post("/:product_id/delete", async(req,res)=>{
+    const product = await Tea.where({
+        "id": req.params.product_id
+    }).fetch({
+        require: true
+    })
+    await product.destroy()
+    res.redirect("/products")
 })
 
 module.exports = router; 

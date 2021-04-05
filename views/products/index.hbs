@@ -1,4 +1,7 @@
 {{#extends "base"}}
+{{#block "title"}}
+Products | Tea Gee See
+{{/block}}
 {{#block "content"}}
 <h1>All Products List</h1>
 <a href="/products/create" class="btn btn-success mb-2">Create</a>
@@ -15,6 +18,7 @@
             <th>Serving</th>
             <th>Stock</th>
             <th>Image</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -31,6 +35,9 @@
                 <td>{{this.stock}}</td>
                 <td>
                     <img class="img" style="width:100px" src="{{this.image}}"/>
+                </td>
+                <td>
+                    <a href="/products/{{this.id}}/delete" class="btn-sm btn-danger">Delete</a>
                 </td>
             </tr>
         {{/each}}
