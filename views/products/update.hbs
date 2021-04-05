@@ -1,0 +1,15 @@
+{{#extends "base"}}
+{{#block "title"}}
+Update | Tea Gee See
+{{/block}}
+
+{{#block "content"}}
+<h1>Update Product</h1>
+
+<form method="POST">
+    {{{form}}}
+    <input type="submit" class="btn btn-primary" value="Update">
+    <a href="/products" class="btn btn-success">Cancel</a>
+</form>
+{{/block}}
+{{/extends}}
