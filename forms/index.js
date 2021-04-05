@@ -36,7 +36,7 @@ const createProductForm = () => {
             },
             validators: [validators.maxlength(100)]
         }),
-        "cost": fields.string({
+        "cost": fields.number({
             required: true,
             errorAfterField: true,
             cssClass: {
@@ -84,6 +84,14 @@ const createProductForm = () => {
                 label: ["form-label"]
             },
             validators: [validators.maxlength(20)],
+        }),
+        "stock": fields.number({
+            required: true,
+            errorAfterField: true,
+            cssClass : {
+                label: ["form-label"]
+            },
+            validators: [validators.min(1)],
         }),
         "image": fields.string({
             required: true,
