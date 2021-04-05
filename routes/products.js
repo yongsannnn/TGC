@@ -30,6 +30,7 @@ router.post("/create", async (req, res) => {
             const newProduct = new Tea();
             newProduct.set(form.data)
             await newProduct.save()
+            req.flash("success_msg", "New tea has been added.")
             res.redirect("/products")
         },
         "error": (form) => {
@@ -48,7 +49,7 @@ router.get("/:product_id/update", async (req, res) => {
     }).fetch({
         require: true
     })
-    
+
     const form = createProductForm();
     form.fields.name.value = product.get("name")
     form.fields.cost.value = product.get("cost")
@@ -60,7 +61,7 @@ router.get("/:product_id/update", async (req, res) => {
     form.fields.stock.value = product.get("stock")
     form.fields.image.value = product.get("image")
 
-    res.render("products/update",{
+    res.render("products/update", {
         "form": form.toHTML(bootstrapField),
         "product": product.toJSON()
     })
@@ -68,20 +69,21 @@ router.get("/:product_id/update", async (req, res) => {
 
 
 // POST 
-router.post("/:product_id/update", async(req,res)=>{
+router.post("/:product_id/update", async (req, res) => {
     const product = await Tea.where({
         "id": req.params.product_id
     }).fetch({
         require: true
     })
     const productForm = createProductForm();
-    productForm.handle(req,{
-        "success": async(form)=>{
+    productForm.handle(req, {
+        "success": async (form) => {
             product.set(form.data)
             await product.save()
+            req.flash("success_msg", "Selected tea has been updated.")
             res.redirect("/products")
         },
-        "error": async(form)=>{
+        "error": async (form) => {
             res.render("products/update", {
                 "form": form.toHTML(bootstrapField),
             })
@@ -110,6 +112,7 @@ router.post("/:product_id/delete", async (req, res) => {
         require: true
     })
     await product.destroy()
+    req.flash("success_msg", "Selected tea has been deleted.")
     res.redirect("/products")
 })
 
