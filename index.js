@@ -25,9 +25,12 @@ app.use(
 
 // import routes
 const landingRoutes = require("./routes/landing")
+const productRoutes = require("./routes/products")
+
 
 function main() {
     app.use("/", landingRoutes)
+    app.use("/products", productRoutes)
 }
 
 main()

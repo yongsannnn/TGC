@@ -1,0 +1,38 @@
+{{#extends "base"}}
+{{#block "content"}}
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Cost</th>
+            <th>Description</th>
+            <th>Ingredient</th>
+            <th>Water Temperature</th>
+            <th>Steep_time</th>
+            <th>Serving</th>
+            <th>Stock</th>
+            <th>Image</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each products}}
+            <tr>
+                <td>{{this.id}}</td>
+                <td>{{this.name}}</td>
+                <td>{{this.cost}}</td>
+                <td>{{this.description}}</td>
+                <td>{{this.ingredient}}</td>
+                <td>{{this.water_temperature}}</td>
+                <td>{{this.steep_time}}</td>
+                <td>{{this.serving}}</td>
+                <td>{{this.stock}}</td>
+                <td>
+                    <img class="img" style="width:100px" src="{{this.image}}"/>
+                </td>
+            </tr>
+        {{/each}}
+    </tbody>
+</table>
+{{/block}}
+{{/extends}}

@@ -22,8 +22,8 @@ exports.up = function(db) {
       "description": {type:"string", length:500},
       "ingredient": {type: "string", length:200},
       "water_temperature": {type: "int", unsigned: true},
-      "steep_time": {type: "int", unsigned: true},
-      "serving": {type: "int", unsigned: true},
+      "steep_time": {type: "string", length: 20},
+      "serving": {type: "string", length: 20},
       "stock": {type: "int", unsigned: true},
       "image":  {type: "string", length:250}
   });
@@ -32,6 +32,7 @@ exports.up = function(db) {
 exports.down = function(db) {
   return db.dropTable("teas");
 };
+
 exports._meta = {
   "version": 1
 };
