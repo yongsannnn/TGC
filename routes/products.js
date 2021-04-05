@@ -2,11 +2,13 @@ const express = require("express");
 const router = express.Router();
 const { bootstrapField, createProductForm } = require('../forms');
 
-const { Tea } = require("../models")
+const { Tea, Brand } = require("../models")
 
 // READ ALL
 router.get("/", async (req, res) => {
-    let teas = await Tea.collection().fetch();
+    let teas = await Tea.collection().fetch({
+        withRelated: ["brand"]
+    });
     res.render("products/index", {
         "products": teas.toJSON()
     })
@@ -16,7 +18,10 @@ router.get("/", async (req, res) => {
 // CREATE
 // GET
 router.get("/create", async (req, res) => {
-    const productForm = createProductForm();
+    const allBrands = await Brand.fetchAll().map((b)=>{
+        return [b.get("id"), b.get("name")]
+    })
+    const productForm = createProductForm(allBrands);
     res.render("products/create", {
         "form": productForm.toHTML(bootstrapField)
     })
@@ -44,13 +49,16 @@ router.post("/create", async (req, res) => {
 // UPDATE
 // GET 
 router.get("/:product_id/update", async (req, res) => {
+    const allBrands = await Brand.fetchAll().map((b)=>{
+        return [b.get("id"), b.get("name")]
+    })
     const product = await Tea.where({
         "id": req.params.product_id
     }).fetch({
         require: true
     })
 
-    const form = createProductForm();
+    const form = createProductForm(allBrands);
     form.fields.name.value = product.get("name")
     form.fields.cost.value = product.get("cost")
     form.fields.description.value = product.get("description")
@@ -60,6 +68,7 @@ router.get("/:product_id/update", async (req, res) => {
     form.fields.serving.value = product.get("serving")
     form.fields.stock.value = product.get("stock")
     form.fields.image.value = product.get("image")
+    form.fields.brand_id.value = product.get("brand_id")
 
     res.render("products/update", {
         "form": form.toHTML(bootstrapField),
