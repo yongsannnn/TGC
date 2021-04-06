@@ -6,49 +6,66 @@ Products | Tea Gee See
 <div class="mt-2 mb-4 nav-route">
     HOME / PRODUCTS
 </div>
-<div style="display:flex" class="mb-2">
-    <h3>Products</h3>
-    <a href="/products/create" class="btn btn-success ml-auto">Create</a>
-</div>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Brand</th>
-            <th>Origin</th>
-            <th>Type</th>
-            <th>Package</th>
-            <th>Name</th>
-            <th>Ingredient</th>
-            <th>Flavour</th>
-            <th>Stock</th>
-            <th>Cost</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        {{#each products}}
-        <tr>
-            <td>{{this.brand.name}}</td>
-            <td>{{this.origin.name}}</td>
-            <td>{{this.type.name}}</td>
-            <td>{{this.package.name}}</td>
-            <td>{{this.name}}</td>
-            <td>{{this.ingredient}}</td>
-            <td>
-                {{#each this.flavour}}
-                <span class="badge badge-pill badge-secondary">{{this.name}}</span>
-                {{/each}}
-            </td>
-            <td>{{this.stock}}</td>
-            <td>{{this.cost}}</td>
-            <td>
-                <a href="/products/{{this.id}}/update" class="">More -> </a>
-                {{!-- <a href="/products/{{this.id}}/update" class="btn-sm btn-success">Update</a>
+
+<div class="row">
+    <div class="col-2">
+        <div class="spacer"></div>
+        <i class="fas fa-search" data-toggle="collapse" href="#collapseForm" role="button" aria-expanded="false"
+            aria-controls="collapseForm">
+            Filter
+        </i>
+        <form method="GET" id="collapseForm" class="collapse">
+            {{{form}}}
+            <input type="submit" class="btn btn-secondary btn-sm" value="Search" />
+        </form>
+    </div>
+    <div class="col-10">
+        <div style="display:flex" class="mb-2">
+            <h3>Products</h3>
+            <a href="/products/create" class="btn btn-success btn-sm ml-auto flexed-btn">Create</a>
+        </div>
+        <p>{{products.length}} items</p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Brand</th>
+                    <th>Origin</th>
+                    <th>Type</th>
+                    <th>Package</th>
+                    <th>Name</th>
+                    <th>Ingredient</th>
+                    <th>Flavour</th>
+                    <th>Stock</th>
+                    <th>Cost</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each products}}
+                <tr>
+                    <td>{{this.brand.name}}</td>
+                    <td>{{this.origin.name}}</td>
+                    <td>{{this.type.name}}</td>
+                    <td>{{this.package.name}}</td>
+                    <td>{{this.name}}</td>
+                    <td>{{this.ingredient}}</td>
+                    <td>
+                        {{#each this.flavour}}
+                        <span class="badge badge-pill badge-secondary">{{this.name}}</span>
+                        {{/each}}
+                    </td>
+                    <td>{{this.stock}}</td>
+                    <td>{{this.cost}}</td>
+                    <td>
+                        <a href="/products/{{this.id}}/update" class="">More -> </a>
+                        {{!-- <a href="/products/{{this.id}}/update" class="btn-sm btn-success">Update</a>
                 <a href="/products/{{this.id}}/delete" class="btn-sm btn-danger">Delete</a> --}}
-            </td>
-        </tr>
-        {{/each}}
-    </tbody>
-</table>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
 {{/block}}
 {{/extends}}

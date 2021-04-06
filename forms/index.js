@@ -23,6 +23,27 @@ var bootstrapField = function (name, object) {
     var error = object.error ? '<div class="invalid-feedback">' + object.error + '</div>' : '';
 
     var widget = object.widget.toHTML(name, object);
+    return '<div class="form-group">' + label + widget + error + '</div>';
+};
+
+// custom field2
+var bootstrapField2 = function (name, object) {
+    if (!Array.isArray(object.widget.classes)) { object.widget.classes = []; }
+
+    if (object.widget.classes.indexOf('form-control') === -1) {
+        object.widget.classes.push('form-control');
+    }
+
+    var validationclass = object.value && !object.error ? 'is-valid' : '';
+    validationclass = object.error ? 'is-invalid' : validationclass;
+    if (validationclass) {
+        object.widget.classes.push(validationclass);
+    }
+
+    var label = object.labelHTML(name);
+    var error = object.error ? '<div class="invalid-feedback">' + object.error + '</div>' : '';
+
+    var widget = object.widget.toHTML(name, object);
     return '<div class="form-group col col-3">' + label + widget + error + '</div>';
 };
 
@@ -153,4 +174,60 @@ const createProductForm = (brands, origins, types, packages, flavours) => {
     })
 }
 
-module.exports = { createProductForm, bootstrapField } 
+const createSearchForm = (brands, origins, types, packages, flavours) => {
+    return forms.create({
+    "name": fields.string({
+            errorAfterField: true,
+            cssClasses: {
+                label: ["form-label"]
+            },
+            validators: [validators.maxlength(100)]
+        }),
+        "brand_id": fields.string({
+            label:"Brand",
+            errorAfterField: true,
+            cssClasses: {
+                label: ["form-label"]
+            },
+            widget: widget.select(),
+            choices: brands
+        }),
+        "origin_id": fields.string({
+            label:"Origin",
+            errorAfterField: true,
+            cssClasses: {
+                label: ["form-label"]
+            },
+            widget: widget.select(),
+            choices: origins
+        }),
+        "type_id": fields.string({
+            label:"Type",
+            errorAfterField: true,
+            cssClasses: {
+                label: ["form-label"]
+            },
+            widget: widget.select(),
+            choices: types
+        }),
+        "package_id": fields.string({
+            label:"Package",
+            errorAfterField: true,
+            cssClasses: {
+                label: ["form-label"]
+            },
+            widget: widget.select(),
+            choices: packages
+        }),
+        "flavour": fields.string({
+            errorAfterField: true,
+            cssClasses: {
+                label: ["form-label"]
+            },
+            widget: widget.multipleSelect(),
+            choices: flavours
+        }),
+    })
+}
+
+module.exports = { createProductForm, bootstrapField, createSearchForm, bootstrapField2 } 

@@ -11,3 +11,11 @@
     background-size:cover;
     background-position: center;
 }
+
+.spacer{
+    height:50px;
+}
+
+.flexed-btn{
+    height:35px !important;
+}
