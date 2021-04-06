@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { bootstrapField, createProductForm, createSearchForm , bootstrapField2} = require('../forms');
+const { bootstrapField, createProductForm, createSearchForm , bootstrapField2, bootstrapField3} = require('../forms');
 
 const { Tea, Brand, Origin, Type, Package, Flavour } = require("../models")
 
@@ -120,7 +120,7 @@ router.get("/create", async (req, res) => {
     })
     const productForm = createProductForm(allBrands, allOrigins, allTypes, allPackages, allFlavour);
     res.render("products/create", {
-        "form": productForm.toHTML(bootstrapField2)
+        "form": productForm.toHTML(bootstrapField2),
     })
 })
 
@@ -190,7 +190,7 @@ router.get("/:product_id/update", async (req, res) => {
     form.fields.flavour.value = selectedFlavourId
 
     res.render("products/update", {
-        "form": form.toHTML(bootstrapField2),
+        "form": form.toHTML(bootstrapField3),
         "product": productJSON
     })
 })
@@ -220,7 +220,7 @@ router.post("/:product_id/update", async (req, res) => {
         },
         "error": async (form) => {
             res.render("products/update", {
-                "form": form.toHTML(bootstrapField2),
+                "form": form.toHTML(bootstrapField3),
             })
         }
     })

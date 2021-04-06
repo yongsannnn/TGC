@@ -5,19 +5,26 @@ Update | Tea Gee See
 
 {{#block "content"}}
 <div class="mt-2 mb-4 nav-route">
-    HOME / PRODUCTS / {{product.name}} /  UPDATE
+    HOME / PRODUCTS / {{product.name}} / UPDATE
 </div>
 <div style="display:flex" class="mb-2">
     <h3>Update Product: {{product.name}} </h3>
     <a href="/products/{{product.id}}/delete" class="btn btn-sm btn-danger ml-auto flexed-btn">Delete</a>
 </div>
-<form method="POST">
-    <div class="row">
-    {{{form}}}
+<div class="row">
+    <div class="col-6">
+        <div class="tea-img" style="background-image: url({{product.image}})"></div>
     </div>
-    <input type="submit" class="btn btn-primary btn-sm " value="Update">
-    <a href="/products" class="btn btn-success btn-sm ">Cancel</a>
-</form>
+    <form method="POST" class="col-6">
+        <div class="row">
+            {{{form}}}
+        </div>
+        <input type="hidden" role="uploadcare-uploader" id="uploadcare" />
+
+        <input type="submit" class="btn btn-primary btn-sm " value="Update" id="update">
+        <a href="/products" class="btn btn-success btn-sm ">Cancel</a>
+    </form>
+</div>
 {{/block}}
 {{#block "css"}}
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -26,11 +33,20 @@ Update | Tea Gee See
 {{#block "js"}}
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
-$(document).ready()
-$(document).ready(function() {
-    $('#id_flavour').select2();
-});
-</script>
+    $(document).ready()
+    $(document).ready(function () {
+        $('#id_flavour').select2();
+    });
 
+    UPLOADCARE_PUBLIC_KEY = "cadcf6b0435e8a196cc1"
+
+    document.querySelector("#update").addEventListener("click", () => {
+        document.querySelector("#id_image").value = document.querySelector("#uploadcare").value
+        console.log("Success")
+        console.log(document.querySelector("#id_image").value)
+    })
+</script>
+<script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js" charset="utf-8">
+</script>
 {{/block}}
 {{/extends}}
