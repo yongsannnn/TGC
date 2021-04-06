@@ -4,13 +4,13 @@ Products | Tea Gee See
 {{/block}}
 {{#block "content"}}
 <h1>All Products List</h1>
-<div class="p-5">
 <a href="/products/create" class="btn btn-success mb-2">Create</a>
     <table class="table">
         <thead>
             <tr>
                 <th>Brand</th>
                 <th>Origin</th>
+                <th>Type</th>
                 <th>Name</th>
                 <th>Cost</th>
                 <th>Description</th>
@@ -28,6 +28,7 @@ Products | Tea Gee See
             <tr>
                 <td>{{this.brand.name}}</td>
                 <td>{{this.origin.name}}</td>
+                <td>{{this.type.name}}</td>
                 <td>{{this.name}}</td>
                 <td>{{this.cost}}</td>
                 <td>{{this.description}}</td>
@@ -47,6 +48,5 @@ Products | Tea Gee See
             {{/each}}
         </tbody>
     </table>
-</div>
 {{/block}}
 {{/extends}}
