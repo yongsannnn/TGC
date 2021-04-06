@@ -23,7 +23,7 @@ var bootstrapField = function (name, object) {
     var error = object.error ? '<div class="invalid-feedback">' + object.error + '</div>' : '';
 
     var widget = object.widget.toHTML(name, object);
-    return '<div class="form-group">' + label + widget + error + '</div>';
+    return '<div class="form-group col col-3">' + label + widget + error + '</div>';
 };
 
 const createProductForm = (brands, origins, types, packages, flavours) => {
@@ -93,15 +93,6 @@ const createProductForm = (brands, origins, types, packages, flavours) => {
             },
             validators: [validators.min(1)]
         }),
-        "description": fields.string({
-            required: true,
-            errorAfterField: true,
-            cssClasses: {
-                label: ["form-label"]
-            },
-            validators: [validators.maxlength(500)],
-            widget: widget.textarea()
-        }),
         "ingredient": fields.string({
             required: true,
             errorAfterField: true,
@@ -149,6 +140,15 @@ const createProductForm = (brands, origins, types, packages, flavours) => {
                 label: ["form-label"]
             },
             validators: [validators.maxlength(250)],
+        }),
+        "description": fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ["form-label"]
+            },
+            validators: [validators.maxlength(500)],
+            widget: widget.textarea()
         }),
     })
 }
