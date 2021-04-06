@@ -4,17 +4,15 @@ Delete | Tea Gee See
 {{/block}}
 
 {{#block "content"}}
-<h1>Delete Product</h1>
-
+<div class="mt-2 mb-4 nav-route">
+    HOME / PRODUCTS / {{product.name}} / DELETE
+</div>
 <form method="POST">
     <div class="alert alert-danger">
-        Are you sure you want to delete: {{product.name}}
+        Are you sure you want to delete <strong>{{product.name}}</strong> and all it's content?
     </div> 
     <input type="submit" value="Delete" class="btn btn-danger">
     <a href="/products" class="btn btn-success">Cancel</a>
-
-
-
 </form>
 {{/block}}
 {{/extends}}

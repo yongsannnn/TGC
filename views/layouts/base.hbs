@@ -9,6 +9,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link  rel="stylesheet" href="/styles.css" >    
     {{#block "css"}}{{/block}}
     <title>{{#block "title"}}{{/block}}</title>
 </head>
@@ -25,7 +26,24 @@
     <div class="alert alert-danger">{{this}}</div>
     {{/each}}
     {{/if}}
-    <section class="p-5">
+    <nav class="navbar navbar-expand-lg navbar-light " style="padding: 0rem 2rem">
+        <a class="navbar-brand" href="/">TEE GEE SEE</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link" href="/products">All Tea</a>
+                <a class="nav-item nav-link" href="#">Orders</a>
+            </div>
+            <div class="navbar-nav ml-auto">
+                <a class="nav-item nav-link ml-auto" href="#">Sign In</a>
+            </div>
+        </div>
+    </nav>
+    
+    <section style="padding: 0rem 2rem">
         {{#block "content"}}
         {{/block}}
     </section>
