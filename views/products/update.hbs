@@ -12,4 +12,18 @@ Update | Tea Gee See
     <a href="/products" class="btn btn-success">Cancel</a>
 </form>
 {{/block}}
+{{#block "css"}}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+{{/block}}
+
+{{#block "js"}}
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+$(document).ready()
+$(document).ready(function() {
+    $('#id_flavour').select2();
+});
+</script>
+
+{{/block}}
 {{/extends}}
