@@ -2,12 +2,12 @@ const express = require("express");
 const router = express.Router();
 const { bootstrapField, createProductForm } = require('../forms');
 
-const { Tea, Brand, Origin, Type } = require("../models")
+const { Tea, Brand, Origin, Type, Package } = require("../models")
 
 // READ ALL
 router.get("/", async (req, res) => {
     let teas = await Tea.collection().fetch({
-        withRelated: ["brand","origin", "type"]
+        withRelated: ["brand","origin", "type", "package"]
     });
     res.render("products/index", {
         "products": teas.toJSON()
@@ -27,7 +27,10 @@ router.get("/create", async (req, res) => {
     const allTypes = await Type.fetchAll().map((t)=>{
         return [t.get("id"), t.get("name")]
     })
-    const productForm = createProductForm(allBrands, allOrigins, allTypes);
+    const allPackages = await Package.fetchAll().map((p)=>{
+        return [p.get("id"), p.get("name")]
+    })
+    const productForm = createProductForm(allBrands, allOrigins, allTypes, allPackages);
     res.render("products/create", {
         "form": productForm.toHTML(bootstrapField)
     })
@@ -64,13 +67,16 @@ router.get("/:product_id/update", async (req, res) => {
     const allTypes = await Type.fetchAll().map((t)=>{
         return [t.get("id"), t.get("name")]
     })
+    const allPackages = await Package.fetchAll().map((p)=>{
+        return [p.get("id"), p.get("name")]
+    })
     const product = await Tea.where({
         "id": req.params.product_id
     }).fetch({
         require: true
     })
 
-    const form = createProductForm(allBrands,allOrigins,allTypes);
+    const form = createProductForm(allBrands,allOrigins,allTypes,allPackages);
     form.fields.name.value = product.get("name")
     form.fields.cost.value = product.get("cost")
     form.fields.description.value = product.get("description")
@@ -83,6 +89,7 @@ router.get("/:product_id/update", async (req, res) => {
     form.fields.brand_id.value = product.get("brand_id")
     form.fields.origin_id.value = product.get("origin_id")
     form.fields.type_id.value = product.get("type_id")
+    form.fields.package_id.value = product.get("package_id")
 
     res.render("products/update", {
         "form": form.toHTML(bootstrapField),
