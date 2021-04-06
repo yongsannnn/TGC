@@ -1,0 +1,13 @@
+.nav-route{
+    font-size: 10px;
+    padding: 1em 0;
+    border-top: 1px solid #dbdbdb;
+    border-bottom: 1px solid #dbdbdb;
+    text-transform: uppercase;
+}
+.tea-img{
+    width:100px;
+    height:100px;
+    background-size:cover;
+    background-position: center;
+}

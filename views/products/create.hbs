@@ -4,14 +4,21 @@ Create | Tea Gee See
 {{/block}}
 
 {{#block "content"}}
-<h1>Create Product</h1>
+<div class="mt-2 mb-4 nav-route">
+    HOME / PRODUCTS / CREATE
+</div>
+<div class="container">
+    <h1>Create Product</h1>
 
-<form method="POST">
-    <div class="row">
-        {{{form}}}
-    </div>
+    <form method="POST">
+        <div class="row">
+            {{{form}}}
+        </div>
         <input type="submit" class="btn btn-primary" value="Create">
-</form>
+        <a href="/products" class="btn btn-success">Cancel</a>
+
+    </form>
+</div>
 {{/block}}
 {{#block "css"}}
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -20,10 +27,10 @@ Create | Tea Gee See
 {{#block "js"}}
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
-$(document).ready()
-$(document).ready(function() {
-    $('#id_flavour').select2();
-});
+    $(document).ready()
+    $(document).ready(function () {
+        $('#id_flavour').select2();
+    });
 </script>
 
 {{/block}}

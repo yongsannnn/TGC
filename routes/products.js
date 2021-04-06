@@ -9,8 +9,10 @@ router.get("/", async (req, res) => {
     let teas = await Tea.collection().fetch({
         withRelated: ["brand","origin", "type", "package", "flavour"]
     });
+    let teasJSON = teas.toJSON()
+    let reversedTeas = [...teasJSON].reverse()
     res.render("products/index", {
-        "products": teas.toJSON()
+        "products": reversedTeas
     })
 })
 
