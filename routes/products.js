@@ -2,12 +2,12 @@ const express = require("express");
 const router = express.Router();
 const { bootstrapField, createProductForm } = require('../forms');
 
-const { Tea, Brand } = require("../models")
+const { Tea, Brand, Origin } = require("../models")
 
 // READ ALL
 router.get("/", async (req, res) => {
     let teas = await Tea.collection().fetch({
-        withRelated: ["brand"]
+        withRelated: ["brand","origin"]
     });
     res.render("products/index", {
         "products": teas.toJSON()
@@ -21,7 +21,10 @@ router.get("/create", async (req, res) => {
     const allBrands = await Brand.fetchAll().map((b)=>{
         return [b.get("id"), b.get("name")]
     })
-    const productForm = createProductForm(allBrands);
+    const allOrigins = await Origin.fetchAll().map((o)=>{
+        return [o.get("id"), o.get("name")]
+    })
+    const productForm = createProductForm(allBrands, allOrigins);
     res.render("products/create", {
         "form": productForm.toHTML(bootstrapField)
     })
@@ -52,13 +55,16 @@ router.get("/:product_id/update", async (req, res) => {
     const allBrands = await Brand.fetchAll().map((b)=>{
         return [b.get("id"), b.get("name")]
     })
+    const allOrigins = await Origin.fetchAll().map((o)=>{
+        return [o.get("id"), o.get("name")]
+    })
     const product = await Tea.where({
         "id": req.params.product_id
     }).fetch({
         require: true
     })
 
-    const form = createProductForm(allBrands);
+    const form = createProductForm(allBrands,allOrigins);
     form.fields.name.value = product.get("name")
     form.fields.cost.value = product.get("cost")
     form.fields.description.value = product.get("description")
@@ -69,6 +75,7 @@ router.get("/:product_id/update", async (req, res) => {
     form.fields.stock.value = product.get("stock")
     form.fields.image.value = product.get("image")
     form.fields.brand_id.value = product.get("brand_id")
+    form.fields.origin_id.value = product.get("origin_id")
 
     res.render("products/update", {
         "form": form.toHTML(bootstrapField),

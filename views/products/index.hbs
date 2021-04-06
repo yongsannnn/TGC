@@ -4,29 +4,30 @@ Products | Tea Gee See
 {{/block}}
 {{#block "content"}}
 <h1>All Products List</h1>
+<div class="p-5">
 <a href="/products/create" class="btn btn-success mb-2">Create</a>
-<table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Brand</th>
-            <th>Name</th>
-            <th>Cost</th>
-            <th>Description</th>
-            <th>Ingredient</th>
-            <th>Water Temperature</th>
-            <th>Steep Time</th>
-            <th>Serving</th>
-            <th>Stock</th>
-            <th>Image</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        {{#each products}}
+    <table class="table">
+        <thead>
             <tr>
-                <td>{{this.id}}</td>
+                <th>Brand</th>
+                <th>Origin</th>
+                <th>Name</th>
+                <th>Cost</th>
+                <th>Description</th>
+                <th>Ingredient</th>
+                <th>Water Temperature</th>
+                <th>Steep Time</th>
+                <th>Serving</th>
+                <th>Stock</th>
+                <th>Image</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each products}}
+            <tr>
                 <td>{{this.brand.name}}</td>
+                <td>{{this.origin.name}}</td>
                 <td>{{this.name}}</td>
                 <td>{{this.cost}}</td>
                 <td>{{this.description}}</td>
@@ -36,15 +37,16 @@ Products | Tea Gee See
                 <td>{{this.serving}}</td>
                 <td>{{this.stock}}</td>
                 <td>
-                    <img class="img" style="width:100px" src="{{this.image}}"/>
+                    <img class="img" style="width:100px" src="{{this.image}}" />
                 </td>
                 <td>
                     <a href="/products/{{this.id}}/update" class="btn-sm btn-success">Update</a>
                     <a href="/products/{{this.id}}/delete" class="btn-sm btn-danger">Delete</a>
                 </td>
             </tr>
-        {{/each}}
-    </tbody>
-</table>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
 {{/block}}
 {{/extends}}
