@@ -142,7 +142,7 @@ const createProductForm = (brands, origins, types, packages, flavours) => {
             cssClasses: {
                 label: ["form-label"]
             },
-            validators: [validators.maxlength(200)],
+            validators: [validators.maxlength(400)],
         }),
         "water_temperature": fields.string({
             required: true,
