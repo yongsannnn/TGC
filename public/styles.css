@@ -19,3 +19,9 @@
 .flexed-btn{
     height:35px !important;
 }
+
+.register-form{
+    margin: auto;
+    max-width: 800px;
+    padding: 2em;
+}

@@ -14,7 +14,7 @@ const Tea = bookshelf.model("Tea", {
     package() {
         return this.belongsTo("Package")
     },
-    flavour(){
+    flavour() {
         return this.belongsToMany("Flavour")
     }
 })
@@ -54,4 +54,9 @@ const Flavour = bookshelf.model("Flavour", {
     }
 })
 
-module.exports = { Tea, Brand, Origin, Type, Package, Flavour }
+const User = bookshelf.model("User", {
+    tableName: "users"
+})
+
+
+module.exports = { Tea, Brand, Origin, Type, Package, Flavour, User }
