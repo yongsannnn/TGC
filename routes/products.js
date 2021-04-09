@@ -6,7 +6,7 @@ const { checkIfAuthenticated } = require("../middleware")
 const productDAL = require("../dal/products")
 
 // READ ALL
-router.get("/", async (req, res) => {
+router.get("/", checkIfAuthenticated, async (req, res) => {
     // For Search
     const allBrands = await productDAL.getAllBrands()
     const allOrigins = await productDAL.getAllOrigins()
