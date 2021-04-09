@@ -30,3 +30,20 @@
     max-width: 800px;
     padding: 2em;
 }
+
+.cta{
+    border: 1px solid #d6954b;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #777777;
+    text-align: center;
+    padding: 0.5rem 1rem;
+    transition: .2s ease;
+    background:transparent;
+    height:40px;
+}
+
+.cta:hover{
+    color: #d6954b;
+    text-decoration: none;
+}

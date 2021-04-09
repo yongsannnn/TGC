@@ -12,21 +12,22 @@ Update | Tea Gee See
 </div>
 <div style="display:flex" class="mb-2">
     <h3>Update Product: {{product.name}} </h3>
-    <a href="/products/{{product.id}}/delete" class="btn btn-sm btn-danger ml-auto flexed-btn">Delete</a>
+    <a href="/products/{{product.id}}/delete" class="cta ml-auto">Delete</a>
 </div>
 <div class="row">
     <div class="col-6">
         <div class="tea-img" style="background-image: url({{product.image}})"></div>
     </div>
     <form method="POST" class="col-6">
-        <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+        <input type="hidden" name="_csrf" value="{{csrfToken}}" />
         <div class="row">
             {{{form}}}
         </div>
         <input type="hidden" role="uploadcare-uploader" id="uploadcare" />
-
-        <input type="submit" class="btn btn-primary btn-sm " value="Update" id="update">
-        <a href="/products" class="btn btn-success btn-sm ">Cancel</a>
+        <div>
+            <input type="submit" class="cta" value="Update" id="update">
+            <a href="/products" class="cta">Cancel</a>
+        </div>
     </form>
 </div>
 {{/block}}
@@ -45,9 +46,9 @@ Update | Tea Gee See
     UPLOADCARE_PUBLIC_KEY = "cadcf6b0435e8a196cc1"
 
     document.querySelector("#update").addEventListener("click", () => {
-        if (document.querySelector("#uploadcare").value){
+        if (document.querySelector("#uploadcare").value) {
             document.querySelector("#id_image").value = document.querySelector("#uploadcare").value
-        } 
+        }
     })
 </script>
 <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js" charset="utf-8">
