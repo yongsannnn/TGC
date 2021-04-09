@@ -5,9 +5,13 @@ Delete | Tea Gee See
 
 {{#block "content"}}
 <div class="mt-2 mb-4 nav-route">
-    HOME / PRODUCTS / {{product.name}} / DELETE
+    <a href="/">HOME</a>
+    /
+    <a href="/products">PRODUCTS</a>
+    / {{product.name}} / DELETE
 </div>
 <form method="POST">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
     <div class="alert alert-danger">
         Are you sure you want to delete <strong>{{product.name}}</strong> and all it's content?
     </div> 
