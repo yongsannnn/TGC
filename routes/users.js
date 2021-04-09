@@ -24,12 +24,22 @@ router.post("/register", (req, res) => {
     const registrationForm = createUserForm();
     registrationForm.handle(req, {
         "success": async (form) => {
-            let { confirm_password, ...userData } = form.data
-            userData.password = getHashedPassword(userData.password)
-            const user = new User(userData)
-            await user.save();
-            req.flash("success_msg", "New user created")
-            res.redirect("/users/login")
+            let checkEmail = await User.where({
+                "email": form.data.email
+            }).fetch({
+                required: false
+            })
+            if (checkEmail) {
+                req.flash("error_msg", "Email already in used. ")
+                res.redirect("/users/register")
+            } else {
+                let { confirm_password, ...userData } = form.data
+                userData.password = getHashedPassword(userData.password)
+                const user = new User(userData)
+                await user.save();
+                req.flash("success_msg", "New user created")
+                res.redirect("/users/login")
+            }
         },
         "error": (form) => {
             res.render("users/register", {
