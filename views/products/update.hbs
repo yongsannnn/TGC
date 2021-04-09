@@ -5,7 +5,10 @@ Update | Tea Gee See
 
 {{#block "content"}}
 <div class="mt-2 mb-4 nav-route">
-    HOME / PRODUCTS / {{product.name}} / UPDATE
+    <a href="/">HOME</a>
+    /
+    <a href="/products">PRODUCTS</a>
+    / {{product.name}} / UPDATE
 </div>
 <div style="display:flex" class="mb-2">
     <h3>Update Product: {{product.name}} </h3>
@@ -16,6 +19,7 @@ Update | Tea Gee See
         <div class="tea-img" style="background-image: url({{product.image}})"></div>
     </div>
     <form method="POST" class="col-6">
+        <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
         <div class="row">
             {{{form}}}
         </div>
