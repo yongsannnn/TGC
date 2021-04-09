@@ -335,6 +335,70 @@ const createLoginForm = () => {
     })
 }
 
+const createUpdateUserForm = () => {
+    return forms.create({
+        "name": fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ["form-label"]
+            },
+            validators: [validators.maxlength(45)]
+        }),
+        "email": fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ["form-label"]
+            },
+            validators: [validators.email(), validators.maxlength(255)]
+        }),
+        "password": fields.password({
+            label: "New Password",
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ["form-label"]
+            },
+            validators: [validators.maxlength(32)]
+        }),
+        "confirm_password": fields.password({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ["form-label"]
+            },
+            validators: [validators.matchField("password")]
+        }),
+        "date_of_birth": fields.date({
+            label: "DOB",
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ["form-label"]
+            },
+            widget: widget.date(),
+        }),
+        "contact_number": fields.number({
+            label: "Contact Number",
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ["form-label"]
+            },
+            validators: [validators.maxlength(8)]
+        }),
+        "address": fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ["form-label"]
+            },
+            validators: [validators.maxlength(255)]
+        })
+    })
+}
+
 module.exports = {
     createProductForm,
     bootstrapField,
@@ -342,5 +406,6 @@ module.exports = {
     bootstrapFieldCol6,
     createSearchForm,
     createUserForm,
-    createLoginForm
+    createLoginForm,
+    createUpdateUserForm
 } 
