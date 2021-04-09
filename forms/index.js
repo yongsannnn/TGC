@@ -27,7 +27,7 @@ var bootstrapField = function (name, object) {
 };
 
 // custom field2
-var bootstrapField2 = function (name, object) {
+var bootstrapFieldCol3 = function (name, object) {
     if (!Array.isArray(object.widget.classes)) { object.widget.classes = []; }
 
     if (object.widget.classes.indexOf('form-control') === -1) {
@@ -49,7 +49,7 @@ var bootstrapField2 = function (name, object) {
 
 
 // custom field3
-var bootstrapField3 = function (name, object) {
+var bootstrapFieldCol6 = function (name, object) {
     if (!Array.isArray(object.widget.classes)) { object.widget.classes = []; }
 
     if (object.widget.classes.indexOf('form-control') === -1) {
@@ -80,7 +80,7 @@ const createProductForm = (brands, origins, types, packages, flavours) => {
             validators: [validators.maxlength(100)]
         }),
         "brand_id": fields.string({
-            label:"Brand",
+            label: "Brand",
             required: true,
             errorAfterField: true,
             cssClasses: {
@@ -90,7 +90,7 @@ const createProductForm = (brands, origins, types, packages, flavours) => {
             choices: brands
         }),
         "origin_id": fields.string({
-            label:"Origin",
+            label: "Origin",
             required: true,
             errorAfterField: true,
             cssClasses: {
@@ -100,7 +100,7 @@ const createProductForm = (brands, origins, types, packages, flavours) => {
             choices: origins
         }),
         "type_id": fields.string({
-            label:"Type",
+            label: "Type",
             required: true,
             errorAfterField: true,
             cssClasses: {
@@ -110,7 +110,7 @@ const createProductForm = (brands, origins, types, packages, flavours) => {
             choices: types
         }),
         "package_id": fields.string({
-            label:"Package",
+            label: "Package",
             required: true,
             errorAfterField: true,
             cssClasses: {
@@ -139,7 +139,7 @@ const createProductForm = (brands, origins, types, packages, flavours) => {
         "ingredient": fields.string({
             required: true,
             errorAfterField: true,
-            cssClasses : {
+            cssClasses: {
                 label: ["form-label"]
             },
             validators: [validators.maxlength(200)],
@@ -155,7 +155,7 @@ const createProductForm = (brands, origins, types, packages, flavours) => {
         "steep_time": fields.string({
             required: true,
             errorAfterField: true,
-            cssClasses : {
+            cssClasses: {
                 label: ["form-label"]
             },
             validators: [validators.maxlength(20)],
@@ -163,7 +163,7 @@ const createProductForm = (brands, origins, types, packages, flavours) => {
         "serving": fields.string({
             required: true,
             errorAfterField: true,
-            cssClasses : {
+            cssClasses: {
                 label: ["form-label"]
             },
             validators: [validators.maxlength(20)],
@@ -171,7 +171,7 @@ const createProductForm = (brands, origins, types, packages, flavours) => {
         "stock": fields.number({
             required: true,
             errorAfterField: true,
-            cssClasses : {
+            cssClasses: {
                 label: ["form-label"]
             },
             validators: [validators.min(1)],
@@ -188,7 +188,7 @@ const createProductForm = (brands, origins, types, packages, flavours) => {
         "image": fields.string({
             required: true,
             errorAfterField: true,
-            cssClasses : {
+            cssClasses: {
                 label: ["form-label"]
             },
             widget: widget.hidden()
@@ -198,7 +198,7 @@ const createProductForm = (brands, origins, types, packages, flavours) => {
 
 const createSearchForm = (brands, origins, types, packages, flavours) => {
     return forms.create({
-    "name": fields.string({
+        "name": fields.string({
             errorAfterField: true,
             cssClasses: {
                 label: ["form-label"]
@@ -206,7 +206,7 @@ const createSearchForm = (brands, origins, types, packages, flavours) => {
             validators: [validators.maxlength(100)]
         }),
         "brand_id": fields.string({
-            label:"Brand",
+            label: "Brand",
             errorAfterField: true,
             cssClasses: {
                 label: ["form-label"]
@@ -215,7 +215,7 @@ const createSearchForm = (brands, origins, types, packages, flavours) => {
             choices: brands
         }),
         "origin_id": fields.string({
-            label:"Origin",
+            label: "Origin",
             errorAfterField: true,
             cssClasses: {
                 label: ["form-label"]
@@ -224,7 +224,7 @@ const createSearchForm = (brands, origins, types, packages, flavours) => {
             choices: origins
         }),
         "type_id": fields.string({
-            label:"Type",
+            label: "Type",
             errorAfterField: true,
             cssClasses: {
                 label: ["form-label"]
@@ -233,7 +233,7 @@ const createSearchForm = (brands, origins, types, packages, flavours) => {
             choices: types
         }),
         "package_id": fields.string({
-            label:"Package",
+            label: "Package",
             errorAfterField: true,
             cssClasses: {
                 label: ["form-label"]
@@ -252,4 +252,67 @@ const createSearchForm = (brands, origins, types, packages, flavours) => {
     })
 }
 
-module.exports = { createProductForm, bootstrapField, createSearchForm, bootstrapField2, bootstrapField3 } 
+const createUserForm = () => {
+    return forms.create({
+        "name": fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ["form-label"]
+            },
+            validators: [validators.maxlength(45)]
+        }),
+        "email": fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ["form-label"]
+            },
+            validators: [validators.email(), validators.maxlength(255)]
+        }),
+        "password": fields.password({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ["form-label"]
+            },
+            validators: [validators.maxlength(32)]
+        }),
+        "confirm_password": fields.password({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ["form-label"]
+            },
+            validators: [validators.matchField("password")]
+        }),
+        "date_of_birth": fields.date({
+            label: "DOB",
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ["form-label"]
+            },
+            widget: widget.date(),
+        }),
+        "contact_number": fields.number({
+            label: "Contact Number",
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ["form-label"]
+            },
+            validators: [validators.maxlength(8)]
+        }),
+        "address": fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ["form-label"]
+            },
+            validators: [validators.maxlength(255)]
+        })
+    })
+}
+
+module.exports = { createProductForm, bootstrapField, createSearchForm, bootstrapFieldCol3, bootstrapFieldCol6, createUserForm } 
