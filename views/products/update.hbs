@@ -45,9 +45,9 @@ Update | Tea Gee See
     UPLOADCARE_PUBLIC_KEY = "cadcf6b0435e8a196cc1"
 
     document.querySelector("#update").addEventListener("click", () => {
-        document.querySelector("#id_image").value = document.querySelector("#uploadcare").value
-        console.log("Success")
-        console.log(document.querySelector("#id_image").value)
+        if (document.querySelector("#uploadcare").value){
+            document.querySelector("#id_image").value = document.querySelector("#uploadcare").value
+        } 
     })
 </script>
 <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js" charset="utf-8">
