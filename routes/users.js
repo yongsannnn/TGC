@@ -4,7 +4,7 @@ const crypto = require("crypto")
 const { User } = require("../models")
 
 
-const { createUserForm, bootstrapField, createLoginForm } = require("../forms")
+const { createUserForm, bootstrapField, createLoginForm, createUpdateUserForm } = require("../forms")
 
 const getHashedPassword = (password) => {
     const sha256 = crypto.createHash("sha256")
@@ -12,6 +12,7 @@ const getHashedPassword = (password) => {
     return hash
 }
 
+// Register 
 router.get("/register", (req, res) => {
     const registrationForm = createUserForm();
 
@@ -49,6 +50,8 @@ router.post("/register", (req, res) => {
     })
 })
 
+
+// Login
 router.get("/login", (req, res) => {
     const loginForm = createLoginForm()
     res.render("users/login", {
@@ -95,10 +98,67 @@ router.post("/login", (req, res) => {
     })
 })
 
+// Logout
 router.get("/logout", (req, res) => {
     req.session.user = null
     req.flash("success_msg", "Logout successful.")
     res.redirect("/users/login")
 })
 
+// Update Profile
+router.get("/profile", async (req, res) => {
+    if (req.session.user == undefined) {
+        // If user not logged in, ask him to log in first. 
+        req.flash("error_msg", "Please login first.")
+        res.redirect("/users/login")
+    } else {
+        const user = await User.where({
+            "email": req.session.user.email
+        }).fetch({
+            require: false
+        })
+        // Create profile form 
+        const form = createUpdateUserForm()
+        // Fill in all the value
+        form.fields.name.value = user.get("name")
+        form.fields.email.value = user.get("email")
+        form.fields.date_of_birth.value = user.get("date_of_birth")
+        form.fields.contact_number.value = user.get("contact_number")
+        form.fields.address.value = user.get("address")
+        // Render page
+
+        res.render("users/profile", {
+            "form": form.toHTML(bootstrapField)
+        })
+    }
+})
+
+router.post("/profile", async (req, res) => {
+    const user = await User.where({
+        "email": req.session.user.email
+    }).fetch({
+        require: true
+    })
+    const form = createUpdateUserForm()
+    form.handle(req,{
+        "success": async(form)=>{
+            let {confirm_password, ...userData} = form.data
+            userData.password = getHashedPassword(userData.password)
+            user.set(userData)
+            await user.save()
+            req.session.user = {
+                        id: user.get("id"),
+                        name: user.get("name"),
+                        email: user.get("email")
+                    }
+            req.flash("success_msg", "Profile has been updated") 
+            res.redirect("/products")
+        },
+        "error": async (form) => {
+            res.render("users/profile", {
+                "form": form.toHTML(bootstrapField)
+            })
+        }
+    })
+})
 module.exports = router
