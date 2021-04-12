@@ -37,12 +37,20 @@ app.use(session({
 app.use(flash())
 
 // setup CSURF (LINE MUST BE BELOW SESSION)
-app.use(csurf())
+const csurfInstance = csurf();
+app.use(function (req, res, next) {
+    // Exclude CSRF from these URL
+    if (req.url.slice(0, 5) == "/api/") {
+        return next();
+    }
+    csurfInstance(req, res, next);
+})
+
 app.use(function (err, req, res, next) {
     console.log(err)
     if (err && err.code == "EBADCSRFTOKEN") {
-        req.flash("error_msg", "Form has expired.")
-        res.redirect("back")
+        req.flash("error_messages", "Form has expired.")
+        res.redirect("back");
     } else {
         next()
     }
@@ -62,7 +70,9 @@ app.use(function (req, res, next) {
 })
 
 app.use(function (req, res, next) {
-    res.locals.csrfToken = req.csrfToken();
+    if (req.csrfToken) {
+        res.locals.csrfToken = req.csrfToken();
+    }
     next()
 })
 
@@ -79,7 +89,7 @@ function main() {
     app.use("/", landingRoutes)
     app.use("/products", productRoutes)
     app.use("/users", userRoutes)
-    app.use("/cart", express.json(),api.cart)
+    app.use("/api/cart", express.json(), api.cart)
 }
 
 main()

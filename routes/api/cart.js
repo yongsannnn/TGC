@@ -1,63 +1,42 @@
 const express = require("express")
 const router = express.Router();
 const { Cart } = require("../../models")
+const CartServices = require("../../services/CartServices")
 
 // GET all items in the cart based on user_id
 router.get("/:user_id", async (req, res) => {
-    const cartItems = await Cart.collection().where({
-        "user_id": req.params.user_id
-    }).fetch({
-        require: false,
-        withRelated: ["tea", "tea.brand", "tea.origin", "tea.type", "tea.package"]
-    })
-    res.status(200)
-    res.send(cartItems.toJSON())
+    let cartServices = new CartServices(req.params.user_id)
+    try {
+        const cartItems = await cartServices.getAll()
+        res.status(200)
+        res.send(cartItems.toJSON())
+    } catch (e) {
+        res.status(500)
+        res.send("Unable to get all items.")
+    }
 })
 
 // ADD item into user's shopping cart
 router.get("/:user_id/:tea_id/add", async (req, res) => {
-    // Check if item is already in cart
-    const cartItems = await Cart.where({
-        "user_id": req.params.user_id,
-        "tea_id": req.params.tea_id
-    }).fetch({
-        require: false,
-    })
-    // If false, create and save into cart
-    if (!cartItems) {
-        let newCartItem = new Cart();
-        newCartItem.set("user_id", req.params.user_id)
-        newCartItem.set("tea_id", req.params.tea_id)
-        newCartItem.set("quantity", 1)
-        await newCartItem.save()
+    let cartServices = new CartServices(req.params.user_id)
+    try {
+        await cartServices.addToCart(req.params.tea_id)
         res.status(200)
-        res.send("Tea has been added to your cart")
-    } else {
-        // If true, add quantity by 1 
-        cartItems.set("quantity", cartItems.get("quantity") + 1)
-        console.log(cartItems.toJSON())
-        await cartItems.save()
-        res.status(200)
-        res.send("Added one more tea to your cart")
+        res.send("Item has been added to your cart.")
+    } catch (e) {
+        res.status(500)
+        res.send("Unable to add item.")
     }
 })
 
 // REMOVE
 router.get("/:user_id/:tea_id/remove", async (req, res) => {
-    // Get item based on id 
-    const cartItems = await Cart.where({
-        "user_id": req.params.user_id,
-        "tea_id": req.params.tea_id
-    }).fetch({
-        require: false,
-    })
-
-    if (cartItems) {
-        // If item exist, destroy
-        cartItems.destroy()
+    let cartServices = new CartServices(req.params.user_id)
+    try {
+        await cartServices.removeItem(req.params.tea_id)
         res.status(200)
         res.send("Item removed from cart.")
-    } else {
+    } catch (e) {
         res.status(204)
         res.send("Item not found.")
     }
@@ -66,20 +45,12 @@ router.get("/:user_id/:tea_id/remove", async (req, res) => {
 
 // UPDATE
 router.post("/:user_id/:tea_id/update", async (req, res) => {
-    // Get item based on id 
-    const cartItems = await Cart.where({
-        "user_id": req.params.user_id,
-        "tea_id": req.params.tea_id
-    }).fetch({
-        require: false,
-    })
-    
-    if (cartItems){
-        cartItems.set("quantity", req.body.quantity)
-        await cartItems.save()
+    let cartServices = new CartServices(req.params.user_id)
+    try {
+        await cartServices.updateQuantity(req.params.tea_id, req.body.quantity)
         res.status(200)
-        res.send("Item quantity updated from cart.")
-    } else {
+        res.send("Item quantity updated.")
+    } catch (e) {
         res.status(204)
         res.send("Item not found.")
     }
