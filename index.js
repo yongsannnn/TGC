@@ -28,7 +28,7 @@ app.use(
 
 // setup session
 app.use(session({
-    "secret": "nil",
+    "secret": process.env.SESSION_SECRET_KEY,
     "resave": false,
     "saveUninitialized": true
 }))
