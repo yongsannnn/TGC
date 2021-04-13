@@ -28,7 +28,7 @@ router.post("/register", (req, res) => {
             let checkEmail = await User.where({
                 "email": form.data.email
             }).fetch({
-                required: false
+                require: false
             })
             if (checkEmail) {
                 req.flash("error_msg", "Email already in used. ")

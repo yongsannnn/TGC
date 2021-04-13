@@ -40,7 +40,7 @@ app.use(flash())
 const csurfInstance = csurf();
 app.use(function (req, res, next) {
     // Exclude CSRF from these URL
-    if (req.url.slice(0, 5) == "/api/") {
+    if (req.url.slice(0, 5) == "/api/" || req.url.slice(0, 15) == "/users/register" ) {
         return next();
     }
     csurfInstance(req, res, next);

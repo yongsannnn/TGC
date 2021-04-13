@@ -23,3 +23,8 @@ yarn add bookshelf
 ```
 yarn add forms
 ```
+
+## Stripe payment
+```
+yarn add stripe
+```
