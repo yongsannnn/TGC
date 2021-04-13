@@ -9,10 +9,8 @@ router.get("/:user_id", async (req, res) => {
     // Create Line Items -- Telling stripe what customer is paying for
     const cartServices = new CartServices(req.params.user_id)
     const allItems = await cartServices.getAll()
-
     let lineItems = []
     let meta = []
-
     for (let item of allItems) {
         const lineItem = {
             "name": item.related("tea").get("name"),

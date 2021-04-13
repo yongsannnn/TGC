@@ -84,7 +84,8 @@ const userRoutes = require("./routes/users")
 // API routes
 const api = {
     "cart": require("./routes/api/cart"),
-    "checkout": require("./routes/api/checkout")
+    "checkout": require("./routes/api/checkout"),
+    "users": require("./routes/api/users")
 }
 function main() {
     app.use("/", landingRoutes)
@@ -92,6 +93,7 @@ function main() {
     app.use("/users", userRoutes)
     app.use("/api/checkout", api.checkout)
     app.use("/api/cart", express.json(), api.cart)
+    app.use("/api/user", express.json(), api.users)
 }
 
 main()
