@@ -83,12 +83,14 @@ const userRoutes = require("./routes/users")
 
 // API routes
 const api = {
-    "cart": require("./routes/api/cart")
+    "cart": require("./routes/api/cart"),
+    "checkout": require("./routes/api/checkout")
 }
 function main() {
     app.use("/", landingRoutes)
     app.use("/products", productRoutes)
     app.use("/users", userRoutes)
+    app.use("/api/checkout", api.checkout)
     app.use("/api/cart", express.json(), api.cart)
 }
 
