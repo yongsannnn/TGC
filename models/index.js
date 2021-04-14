@@ -55,7 +55,10 @@ const Flavour = bookshelf.model("Flavour", {
 })
 
 const User = bookshelf.model("User", {
-    tableName: "users"
+    tableName: "users",
+    order() {
+        return this.belongsToMany("Order")
+    }
 })
 
 const Cart = bookshelf.model("Cart", {
@@ -72,4 +75,31 @@ const BlacklistedToken = bookshelf.model("BlacklistedToken", {
     tableName: "blacklisted_tokens"
 })
 
-module.exports = { Tea, Brand, Origin, Type, Package, Flavour, User, Cart, BlacklistedToken }
+const Status = bookshelf.model("Status", {
+    tableName: "status",
+    order() {
+        return this.belongsToMany("Order")
+    }
+})
+
+const Order = bookshelf.model("Order", {
+    tableName: "orders",
+    user() {
+        return this.belongsTo("User")
+    },
+    status() {
+        return this.belongsTo("Status")
+    }
+})
+
+const Purchase = bookshelf.model("Purchase", {
+    tableName: "purchase",
+    tea() {
+        return this.belongsTo("Tea")
+    },
+    user() {
+        return this.belongsTo("User")
+    }
+})
+
+module.exports = { Tea, Brand, Origin, Type, Package, Flavour, User, Cart, BlacklistedToken, Status, Order, Purchase }
