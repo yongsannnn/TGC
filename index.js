@@ -91,7 +91,7 @@ function main() {
     app.use("/", landingRoutes)
     app.use("/products", productRoutes)
     app.use("/users", userRoutes)
-    app.use("/api/checkout", api.checkout)
+    app.use("/api/checkout", express.json(), api.checkout)
     app.use("/api/cart", express.json(), api.cart)
     app.use("/api/user", express.json(), api.users)
 }

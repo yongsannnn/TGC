@@ -97,8 +97,8 @@ const Purchase = bookshelf.model("Purchase", {
     tea() {
         return this.belongsTo("Tea")
     },
-    user() {
-        return this.belongsTo("User")
+    order() {
+        return this.belongsTo("Order")
     }
 })
 

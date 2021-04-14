@@ -39,12 +39,12 @@ exports.up = function(db) {
                 }
             }
         },
-        user_id:{
+        order_id:{
             "type": "int",
             "notNull": true,
             "foreignKey":{
-                "name": "purchase_user_id",
-                "table": "users",
+                "name": "purchase_order_id",
+                "table": "orders",
                 "mapping": "id",
                 "rules":{
                     "onDelete": "CASCADE",
