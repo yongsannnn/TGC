@@ -10,6 +10,12 @@
     color:black;
 }
 
+.details-highlight{
+    padding: 1em 0;
+    border-bottom: 1px solid #dbdbdb;
+    text-transform: uppercase;
+}
+
 .tea-img{
     width:100%;
     height:90%;

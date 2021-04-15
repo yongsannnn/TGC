@@ -69,7 +69,6 @@ router.post("/login", (req, res) => {
             }).fetch({
                 require: false //If the user don't exist, continue with code
             })
-
             // If user exist, check password
             if (user) {
                 if (user.get("password") == getHashedPassword(form.data.password)) {

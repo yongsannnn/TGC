@@ -1,0 +1,57 @@
+{{#extends "base"}}
+{{#block "title"}}
+Orders | Tea Gee See
+{{/block}}
+{{#block "content"}}
+<div class="mt-2 mb-4 nav-route">
+    <a href="/">HOME</a>
+    /
+    <a href="/orders">ORDERS</a>
+    / {{order.id}} / UPDATE
+
+</div>
+<div class="container">
+    <h4 class="details-highlight">Order Details</h4>
+    <div class="row">
+        <div class="col-6">
+            <p>Order ID : {{order.id}}</p>
+            <p>Recipient Name : {{order.recipient_name}}</p>
+            <p>Recipient Address : {{order.recipient_address}}</p>
+            <p>User Id : {{order.user_id}}</p>
+            <p>Total Cost : {{order.total_cost}}</p>
+            <p>Date Of Order : {{order.date_of_order}}</p>
+        </div>
+        <div class="col-6">
+            {{{form}}}
+            <input type="submit" class="cta" value="Update" id="update">
+            <a href="/orders" class="cta">Cancel</a>
+        </div>
+    </div>
+    <div>
+        <h4 class="pt-3 pb-3">ITEM DETAILS</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Tea ID</th>
+                    <th>Brand</th>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Unit Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each items}}
+                <tr>
+                    <td>{{this.tea.id}}</td>
+                    <td>{{this.tea.brand.name}}</td>
+                    <td>{{this.tea.name}}</td>
+                    <td>{{this.quantity}}</td>
+                    <td>{{this.tea.cost}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+{{/block}}
+{{/extends}}
