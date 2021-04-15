@@ -98,4 +98,30 @@ router.post("/:order_id", checkIfAuthenticated, async (req, res) => {
     })
 })
 
+// DELETE 
+// GET
+router.get("/:order_id/delete", checkIfAuthenticated, async(req,res)=>{
+    const order = await Order.where({
+        "id": req.params.order_id
+    }).fetch({
+        require: true,
+    })
+
+    res.render("orders/delete",{
+        "order": order.toJSON()
+    })
+})
+
+router.post("/:order_id/delete", checkIfAuthenticated, async(req,res)=>{
+    const order = await Order.where({
+        "id": req.params.order_id
+    }).fetch({
+        require: true,
+    })
+
+    await order.destroy()
+    req.flash("success_msg", "Order has been deleted.")
+    res.redirect("/orders")
+})
+
 module.exports = router;

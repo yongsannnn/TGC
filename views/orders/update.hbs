@@ -11,8 +11,12 @@ Orders | Tea Gee See
 
 </div>
 <div class="container">
-    <h4 class="details-highlight">Order Details</h4>
+    <div style="display:flex">
+        <h4 class="pt-3 pb-3">ORDER DETAILS</h4>
+        <a href="/orders/{{order.id}}/delete" class="cta ml-auto my-auto">Delete</a>
+    </div>
     <div class="row">
+        <div class="line"></div>
         <div class="col-6">
             <p>Order ID : {{order.id}}</p>
             <p>Recipient Name : {{order.recipient_name}}</p>

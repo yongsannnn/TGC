@@ -10,10 +10,10 @@
     color:black;
 }
 
-.details-highlight{
-    padding: 1em 0;
+.line{
+    margin: 0.2em 1em;
+    width:100%;
     border-bottom: 1px solid #dbdbdb;
-    text-transform: uppercase;
 }
 
 .tea-img{

@@ -1,0 +1,22 @@
+{{#extends "base"}}
+{{#block "title"}}
+Delete | Tea Gee See
+{{/block}}
+
+{{#block "content"}}
+<div class="mt-2 mb-4 nav-route">
+    <a href="/">HOME</a>
+    /
+    <a href="/orders">ORDERS</a>
+    / {{order.id}} / DELETE
+</div>
+<form method="POST">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+    <div class="alert alert-danger">
+        Are you sure you want to delete <strong>Order ID: {{order.id}}</strong> and all it's content?
+    </div> 
+    <input type="submit" value="Delete" class="cta">
+    <a href="/orders" class="cta">Cancel</a>
+</form>
+{{/block}}
+{{/extends}}
