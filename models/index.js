@@ -75,13 +75,6 @@ const BlacklistedToken = bookshelf.model("BlacklistedToken", {
     tableName: "blacklisted_tokens"
 })
 
-const Status = bookshelf.model("Status", {
-    tableName: "status",
-    order() {
-        return this.belongsToMany("Order")
-    }
-})
-
 const Order = bookshelf.model("Order", {
     tableName: "orders",
     user() {
@@ -91,6 +84,14 @@ const Order = bookshelf.model("Order", {
         return this.belongsTo("Status")
     }
 })
+
+const Status = bookshelf.model("Status", {
+    tableName: "status",
+    order() {
+        return this.hasMany("Order")
+    }
+})
+
 
 const Purchase = bookshelf.model("Purchase", {
     tableName: "purchase",

@@ -1,0 +1,45 @@
+{{#extends "base"}}
+{{#block "title"}}
+Orders | Tea Gee See
+{{/block}}
+{{#block "content"}}
+<div class="mt-2 mb-4 nav-route">
+    <a href="/">HOME</a>
+    /
+    <a href="/orders">ORDERS</a>
+</div>
+<div class="container">
+    <h4> Orders </h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>User ID</th>
+                <th>Recipient Name</th>
+                <th>Recipient Address</th>
+                <th>Total Cost</th>
+                <th>Order date</th>
+                <th>Completed date</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each orders}}
+            <tr>
+                <td>{{this.id}}</td>
+                <td>{{this.user_id}}</td>
+                <td>{{this.recipient_name}}</td>
+                <td>{{this.recipient_address}}</td>
+                <td>{{this.total_cost}}</td>
+                <td>{{this.date_of_order}}</td>
+                <td>{{this.date_of_completion}}</td>
+                <td>{{this.status.name}}</td>
+                <td><a href="/orders/{{this.id}}" class="">More --></a></td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+{{/block}}
+{{/extends}}

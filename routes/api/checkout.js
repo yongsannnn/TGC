@@ -84,6 +84,9 @@ router.post("/order", async (req, res) => {
     newOrder.set("user_id", user_id)
     newOrder.set("status_id", 2)
     newOrder.set("total_cost", req.body.data.object.amount_total)
+    newOrder.set("recipient_name", user.get("name"))
+    newOrder.set("recipient_address", user.get("address"))
+    newOrder.set("date_of_order", new Date())
     await newOrder.save()
 
 
@@ -96,7 +99,6 @@ router.post("/order", async (req, res) => {
     let lastIndex = order.length - 1
     orderJSON = order.toJSON()
     const order_id = orderJSON[lastIndex].id
-    console.log(order_id)
 
     // Add items to purchases table
     let items = req.body.data.object.metadata.orders
