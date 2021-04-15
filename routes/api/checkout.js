@@ -38,7 +38,8 @@ router.get("/:user_id", async (req, res) => {
         lineItems.push(lineItem)
         meta.push({
             "tea_id": item.get("tea_id"),
-            "quantity": item.get("quantity")
+            "quantity": item.get("quantity"),
+            "user_id": user.get("id")
         })
     }
     // Using Stripe -- Create the payment
@@ -80,9 +81,12 @@ router.post("/process_payment", bodyParser.raw({ type: "application/json" }), as
     }
     if (event.type == "checkout.session.completed") {
         console.log(event.data.object)
+        //  Make metaData into JSON format for processing
+        let items = event.data.object.metadata.orders
+        items = JSON.parse(items)
         // Get user Details
         const user = await User.where({
-            "email": event.data.object.customer_details.email
+            "id": items[0].user_id
         }).fetch({
             require: false
         })
@@ -95,11 +99,8 @@ router.post("/process_payment", bodyParser.raw({ type: "application/json" }), as
 
         selectedOrder.set("total_cost", event.data.object.amount_total)
         selectedOrder.set("status_id", 2)
-        console.log(selectedOrder.get("id"))
         await selectedOrder.save()
         // Add items to purchases table
-        let items = event.data.object.metadata.orders
-        items = JSON.parse(items)
         for (let i of items) {
             const newPurchase = new Purchase();
             newPurchase.set("tea_id", i.tea_id)
