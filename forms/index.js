@@ -413,6 +413,52 @@ const createUpdateOrderForm = (status) => {
         }),
     })
 }
+
+const createOrderSearchForm = (status) => {
+    return forms.create({
+        "status_id": fields.string({
+            label: "Status",
+            required: false,
+            errorAfterField: true, 
+            cssClasses: {
+                label: ["form-label"],
+            },
+            widget : widget.select(),
+            choices: status
+        }),
+        "order_id": fields.number({
+            required: false,
+            cssClasses: {
+                label: ["form-label"],
+            },
+        }),
+        "user_id": fields.number({
+            required: false,
+            cssClasses: {
+                label: ["form-label"],
+            },
+        }),
+        "recipient_name": fields.string({
+            required: false,
+            cssClasses: {
+                label: ["form-label"],
+            },
+        }),
+        "min_cost": fields.number({
+            required: false,
+            cssClasses: {
+                label: ["form-label"],
+            },
+        }),
+        "max_cost": fields.number({
+            required: false,
+            cssClasses: {
+                label: ["form-label"],
+            },
+        }),
+    })
+}
+
 module.exports = {
     createProductForm,
     bootstrapField,
@@ -423,4 +469,5 @@ module.exports = {
     createLoginForm,
     createUpdateUserForm,
     createUpdateOrderForm,
+    createOrderSearchForm
 } 
