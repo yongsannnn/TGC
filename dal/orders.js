@@ -21,6 +21,14 @@ const getOrderById = async (id) => {
         withRelated: ["status"]
     })
 }
+
+const getPurchaseById = async (id) => {
+    return await Purchase.where({
+        "order_id": id
+    }).fetchAll({
+        withRelated: ["tea", "tea.brand", "tea.origin", "tea.type", "tea.package", "tea.flavour"]
+    })
+}
 module.exports = {
-    getAllOrders, getAllStatus, getOrderById
+    getAllOrders, getAllStatus, getOrderById, getPurchaseById
 }

@@ -1,16 +1,17 @@
 const express = require("express")
 const router = express.Router();
 const { Order, Status, Purchase } = require("../models")
-const { bootstrapField, bootstrapFieldCol6, createUpdateOrderForm, } = require('../forms');
+const { bootstrapField, createUpdateOrderForm, } = require('../forms');
 const { checkIfAuthenticated } = require("../middleware")
+const OrdersServices = require("../services/OrdersServices")
+const orderDAL = require("../dal/orders")
 
 // GET
 // ALL ORDERS
 router.get("/", checkIfAuthenticated, async (req, res) => {
     // Get all orders
-    const allOrders = await Order.collection().fetch({
-        withRelated: ["status"]
-    })
+    const ordersServices = new OrdersServices()
+    const allOrders = await ordersServices.getAll()
     allOrdersJSON = allOrders.toJSON()
 
     // Slice the date for better presentation
@@ -29,15 +30,8 @@ router.get("/", checkIfAuthenticated, async (req, res) => {
 // GET
 // INDIVIDUAL ORDER
 router.get("/:order_id", checkIfAuthenticated, async (req, res) => {
-    const order = await Order.where({
-        "id": req.params.order_id
-    }).fetch({
-        require: true,
-        withRelated: ["status"]
-    })
-    const allStatus = await Status.fetchAll().map(s => {
-        return [s.get("id"), s.get("name")]
-    })
+    const order = await orderDAL.getOrderById(req.params.order_id)
+    const allStatus = await orderDAL.getAllStatus()
 
     const orderJSON = order.toJSON()
     // Slice the date for better presentation
@@ -49,11 +43,7 @@ router.get("/:order_id", checkIfAuthenticated, async (req, res) => {
     form.fields.status_id.value = order.get("status_id")
 
     // Get all the items related to this order
-    const items = await Purchase.where({
-        "order_id": req.params.order_id
-    }).fetchAll({
-        withRelated: ["tea", "tea.brand", "tea.origin", "tea.type", "tea.package", "tea.flavour"]
-    })
+    const items = await orderDAL.getPurchaseById(req.params.order_id)
     res.render("orders/update", {
         "form": form.toHTML(bootstrapField),
         "order": orderJSON,
@@ -64,23 +54,15 @@ router.get("/:order_id", checkIfAuthenticated, async (req, res) => {
 // POST 
 // INDIVIDUAL ORDER
 router.post("/:order_id", checkIfAuthenticated, async (req, res) => {
-    const order = await Order.where({
-        "id": req.params.order_id
-    }).fetch({
-        require: true,
-    })
-
-    const allStatus = await Status.fetchAll().map(s => {
-        return [s.get("id"), s.get("name")]
-    })
-
+    const order = await orderDAL.getOrderById(req.params.order_id)
+    const allStatus = await orderDAL.getAllStatus()
     const form = createUpdateOrderForm(allStatus)
     form.handle(req, {
-        "success": async(form)=> {
+        "success": async (form) => {
             // Update status
             order.set(form.data)
             // If status is delivered, add date now to completion date. 
-            if (order.get("status_id") == "4"){
+            if (order.get("status_id") == "4") {
                 order.set("date_of_completion", new Date())
             } else {
                 // Safeguard if changed from 4 to other num
@@ -90,7 +72,7 @@ router.post("/:order_id", checkIfAuthenticated, async (req, res) => {
             req.flash("success_msg", "Order has been updated.")
             res.redirect("/orders")
         },
-        "error": async ( form ) => {
+        "error": async (form) => {
             res.render("orders/update", {
                 "form": form.toHTML(bootstrapField)
             })
@@ -100,25 +82,15 @@ router.post("/:order_id", checkIfAuthenticated, async (req, res) => {
 
 // DELETE 
 // GET
-router.get("/:order_id/delete", checkIfAuthenticated, async(req,res)=>{
-    const order = await Order.where({
-        "id": req.params.order_id
-    }).fetch({
-        require: true,
-    })
-
-    res.render("orders/delete",{
+router.get("/:order_id/delete", checkIfAuthenticated, async (req, res) => {
+    const order = await orderDAL.getOrderById(req.params.order_id)
+    res.render("orders/delete", {
         "order": order.toJSON()
     })
 })
 
-router.post("/:order_id/delete", checkIfAuthenticated, async(req,res)=>{
-    const order = await Order.where({
-        "id": req.params.order_id
-    }).fetch({
-        require: true,
-    })
-
+router.post("/:order_id/delete", checkIfAuthenticated, async (req, res) => {
+    const order = await orderDAL.getOrderById(req.params.order_id)
     await order.destroy()
     req.flash("success_msg", "Order has been deleted.")
     res.redirect("/orders")
