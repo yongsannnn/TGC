@@ -401,62 +401,6 @@ const createUpdateUserForm = () => {
 
 const createUpdateOrderForm = (status) => {
     return forms.create({
-        "order_id": fields.number({
-            required: true,
-            errorAfterField: true, 
-            cssClasses: {
-                label: ["form-label"],
-            },
-            widget: widget.hidden()
-        }),
-        "recipient_name": fields.string({
-            required: true,
-            errorAfterField: true, 
-            cssClasses: {
-                label: ["form-label"],
-            },
-            widget: widget.hidden()
-        }),
-        "recipient_address": fields.string({
-            required: true,
-            errorAfterField: true, 
-            cssClasses: {
-                label: ["form-label"],
-            },
-            widget: widget.hidden()
-        }),
-        "total_cost": fields.number({
-            required: true,
-            errorAfterField: true, 
-            cssClasses: {
-                label: ["form-label"],
-            },
-            widget: widget.hidden()
-        }),
-        "date_of_order": fields.number({
-            required: true,
-            errorAfterField: true, 
-            cssClasses: {
-                label: ["form-label"],
-            },
-            widget: widget.hidden()
-        }),
-        "date_of_completion": fields.number({
-            required: true,
-            errorAfterField: true, 
-            cssClasses: {
-                label: ["form-label"],
-            },
-            widget: widget.hidden()
-        }),
-        "user_id": fields.number({
-            required: true,
-            errorAfterField: true, 
-            cssClasses: {
-                label: ["form-label"],
-            },
-            widget: widget.hidden()
-        }),
         "status_id": fields.string({
             label: "Status",
             required: true,

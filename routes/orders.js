@@ -2,10 +2,11 @@ const express = require("express")
 const router = express.Router();
 const { Order, Status, Purchase } = require("../models")
 const { bootstrapField, bootstrapFieldCol6, createUpdateOrderForm, } = require('../forms');
+const { checkIfAuthenticated } = require("../middleware")
 
 // GET
 // ALL ORDERS
-router.get("/", async (req, res) => {
+router.get("/", checkIfAuthenticated, async (req, res) => {
     // Get all orders
     const allOrders = await Order.collection().fetch({
         withRelated: ["status"]
@@ -25,8 +26,9 @@ router.get("/", async (req, res) => {
 })
 
 
+// GET
 // INDIVIDUAL ORDER
-router.get("/:order_id", async (req, res) => {
+router.get("/:order_id", checkIfAuthenticated, async (req, res) => {
     const order = await Order.where({
         "id": req.params.order_id
     }).fetch({
@@ -44,15 +46,8 @@ router.get("/:order_id", async (req, res) => {
         orderJSON.date_of_completion = String(orderJSON.date_of_completion).slice(4, 15)
     }
     const form = createUpdateOrderForm(allStatus)
-    form.fields.order_id.value = order.get("id")
-    form.fields.recipient_name.value = order.get("recipient_name")
-    form.fields.recipient_address.value = order.get("recipient_address")
-    form.fields.total_cost.value = order.get("total_cost")
-    form.fields.date_of_order.value = order.get("date_of_order")
-    form.fields.date_of_completion.value = order.get("date_of_completion")
-    form.fields.user_id.value = order.get("user_id")
     form.fields.status_id.value = order.get("status_id")
-    
+
     // Get all the items related to this order
     const items = await Purchase.where({
         "order_id": req.params.order_id
@@ -66,6 +61,41 @@ router.get("/:order_id", async (req, res) => {
     })
 })
 
+// POST 
+// INDIVIDUAL ORDER
+router.post("/:order_id", checkIfAuthenticated, async (req, res) => {
+    const order = await Order.where({
+        "id": req.params.order_id
+    }).fetch({
+        require: true,
+    })
 
+    const allStatus = await Status.fetchAll().map(s => {
+        return [s.get("id"), s.get("name")]
+    })
+
+    const form = createUpdateOrderForm(allStatus)
+    form.handle(req, {
+        "success": async(form)=> {
+            // Update status
+            order.set(form.data)
+            // If status is delivered, add date now to completion date. 
+            if (order.get("status_id") == "4"){
+                order.set("date_of_completion", new Date())
+            } else {
+                // Safeguard if changed from 4 to other num
+                order.set("date_of_completion", null)
+            }
+            await order.save()
+            req.flash("success_msg", "Order has been updated.")
+            res.redirect("/orders")
+        },
+        "error": async ( form ) => {
+            res.render("orders/update", {
+                "form": form.toHTML(bootstrapField)
+            })
+        }
+    })
+})
 
 module.exports = router;
