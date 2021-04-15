@@ -10,6 +10,19 @@ router.get("/:user_id", async (req, res) => {
     // Create Line Items -- Telling stripe what customer is paying for
     const cartServices = new CartServices(req.params.user_id)
     const allItems = await cartServices.getAll()
+
+    // Create a new row in Order with status 1 (Processing)
+    const newOrder = new Order()
+    let user = await User.where({
+        "id": req.params.user_id
+    }).fetch()
+    newOrder.set("user_id", user.get("id"))
+    newOrder.set("status_id", 1)
+    newOrder.set("recipient_name", user.get("name"))
+    newOrder.set("recipient_address", user.get("address"))
+    newOrder.set("date_of_order", new Date())
+    await newOrder.save()
+
     let lineItems = []
     let meta = []
     for (let item of allItems) {
@@ -67,59 +80,44 @@ router.post("/process_payment", bodyParser.raw({ type: "application/json" }), as
     }
     if (event.type == "checkout.session.completed") {
         console.log(event.data.object)
+        // Get user Details
+        const user = await User.where({
+            "email": event.data.object.customer_details.email
+        }).fetch({
+            require: false
+        })
+        let user_id = user.get("id")
+
+        // Change Order Details of the last item and add in cost + status to 2 (Paid)
+        let selectedOrder = await Order.where({
+            "user_id": user_id
+        }).query(o => o.orderBy("id", "DESC").limit(1)).fetch()
+
+        selectedOrder.set("total_cost", event.data.object.amount_total)
+        selectedOrder.set("status_id", 2)
+        console.log(selectedOrder.get("id"))
+        await selectedOrder.save()
+        // Add items to purchases table
+        let items = event.data.object.metadata.orders
+        items = JSON.parse(items)
+        for (let i of items) {
+            const newPurchase = new Purchase();
+            newPurchase.set("tea_id", i.tea_id)
+            newPurchase.set("quantity", i.quantity)
+            newPurchase.set("order_id", selectedOrder.get("id"))
+            newPurchase.save()
+        }
+
+        // Delete items from cart
+        // Find all items that matches
+        const cartServices = new CartServices(user_id)
+        for (let i of items) {
+            await cartServices.removeItem(i.tea_id)
+        }
+
+
     }
     res.sendStatus(200);
-})
-
-// Testing for orders
-router.post("/order", async (req, res) => {
-    // Create row for Order table with status 2 (Paid) 
-    const newOrder = new Order()
-    const user = await User.where({
-        "email": req.body.data.object.customer_details.email
-    }).fetch({
-        require: false
-    })
-    let user_id = user.get("id")
-    newOrder.set("user_id", user_id)
-    newOrder.set("status_id", 2)
-    newOrder.set("total_cost", req.body.data.object.amount_total)
-    newOrder.set("recipient_name", user.get("name"))
-    newOrder.set("recipient_address", user.get("address"))
-    newOrder.set("date_of_order", new Date())
-    await newOrder.save()
-
-
-    // Get latest order_id
-    const order = await Order.collection().where({
-        "user_id": user_id
-    }).fetch({
-        require: false
-    })
-    let lastIndex = order.length - 1
-    orderJSON = order.toJSON()
-    const order_id = orderJSON[lastIndex].id
-
-    // Add items to purchases table
-    let items = req.body.data.object.metadata.orders
-    items = JSON.parse(items)
-    for (let i of items) {
-        const newPurchase = new Purchase();
-        newPurchase.set("tea_id", i.tea_id)
-        newPurchase.set("quantity", i.quantity)
-        newPurchase.set("order_id", order_id)
-        newPurchase.save()
-    }
-
-    // Delete items from cart
-    // Find all items that matches
-    const cartServices = new CartServices(user_id)
-    for( let i of items) {
-        await cartServices.removeItem(i.tea_id)
-    }
-    
-    res.status(200)
-    res.send(orderJSON[lastIndex])
 })
 
 module.exports = router;
