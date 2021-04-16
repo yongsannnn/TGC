@@ -8,4 +8,6 @@ router.get("/", async (req, res) => {
     res.send(allTeas)
 })
 
+
+
 module.exports = router

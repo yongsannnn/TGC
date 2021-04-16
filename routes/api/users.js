@@ -112,4 +112,33 @@ router.post("/logout", async (req, res) => {
     }
 })
 
+router.post("/register", async (req,res)=>{
+    // Check if email is already in use
+    let checkEmail = await User.where({
+        "email": req.body.email
+    }).fetch({
+        require: false
+    })
+    if (checkEmail){
+        res.send("Email already in used")    
+    } else {
+        try{
+            // Add user into table
+            const user = new User()
+            user.set("name", req.body.name)
+            user.set("email", req.body.email)
+            user.set("password", getHashedPassword(req.body.password))
+            user.set("address", req.body.address)
+            user.set("contact_number", req.body.contact_number)
+            user.set("date_of_birth", req.body.date_of_birth)
+            await user.save()
+            
+            // send back ok
+            res.send("Ok")
+        } catch (e) {
+            console.log(e)
+            res.send("Unable to create user")
+        }
+    } 
+})
 module.exports = router
