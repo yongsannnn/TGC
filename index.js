@@ -5,10 +5,10 @@ require("dotenv").config();
 const session = require("express-session")
 const flash = require("connect-flash")
 const csurf = require("csurf")
-
+const cors = require("cors")
 // create an instance of express app
 let app = express();
-
+app.use(cors());
 // set the view engine
 app.set("view engine", "hbs");
 
