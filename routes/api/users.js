@@ -31,7 +31,8 @@ router.post("/login", async (req, res) => {
         }
         let accessToken = generateAccessToken(userObject, process.env.TOKEN_SECRET, "15m")
         let refreshToken = generateAccessToken(userObject, process.env.REFRESH_TOKEN_SECRET, "7d")
-        res.send({ accessToken, refreshToken })
+        let id = user.get("id")
+        res.send({ accessToken, refreshToken, id })
     } else {
         res.status(401)
         res.send({
@@ -112,17 +113,17 @@ router.post("/logout", async (req, res) => {
     }
 })
 
-router.post("/register", async (req,res)=>{
+router.post("/register", async (req, res) => {
     // Check if email is already in use
     let checkEmail = await User.where({
         "email": req.body.email
     }).fetch({
         require: false
     })
-    if (checkEmail){
-        res.send("Email already in used")    
+    if (checkEmail) {
+        res.send("Email already in used")
     } else {
-        try{
+        try {
             // Add user into table
             const user = new User()
             user.set("name", req.body.name)
@@ -132,13 +133,48 @@ router.post("/register", async (req,res)=>{
             user.set("contact_number", req.body.contact_number)
             user.set("date_of_birth", req.body.date_of_birth)
             await user.save()
-            
+
             // send back ok
-            res.send("Ok")
+            res.send(user)
         } catch (e) {
             console.log(e)
             res.send("Unable to create user")
         }
-    } 
+    }
+})
+
+// GET profile details
+router.get("/edit/:user_id", async (req, res) => {
+    // get details by user_id
+    let id = req.params.user_id
+    try {
+        let user = await User.where({
+            "id": id
+        }).fetch({
+            require: true
+        })
+        res.send(user)
+    } catch (e) {
+        console.log(e)
+        res.send("Error")
+    }
+})
+
+// POST password change
+router.post("/edit/:user_id", async (req, res) => {
+    let id = req.params.user_id
+    try {
+        let user = await User.where({
+            "id": id
+        }).fetch({
+            require: true
+        })
+        user.set("password", getHashedPassword(req.body.password))
+        user.save()
+        res.send("Password Updated")
+    } catch (e) {
+        console.log(e)
+        res.send("Error")
+    }
 })
 module.exports = router
