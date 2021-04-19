@@ -160,21 +160,35 @@ router.get("/edit/:user_id", async (req, res) => {
     }
 })
 
-// POST password change
+// POST Profile change
 router.post("/edit/:user_id", async (req, res) => {
     let id = req.params.user_id
-    try {
-        let user = await User.where({
+    let user = await User.where({
             "id": id
         }).fetch({
             require: true
         })
-        user.set("password", getHashedPassword(req.body.password))
-        user.save()
-        res.send("Password Updated")
-    } catch (e) {
-        console.log(e)
-        res.send("Error")
+        
+    if (req.body.password){
+        try {
+            user.set("password", getHashedPassword(req.body.password))
+            user.save()
+            res.send("Password Updated")
+        } catch (e) {
+            console.log(e)
+            res.send("Error")
+        }
+    }
+
+    if (req.body.address){
+        try {
+            user.set("address", req.body.address)
+            user.save()
+            res.send("Address Updated")
+        } catch (e) {
+            console.log(e)
+            res.send("Error")
+        }
     }
 })
 module.exports = router
