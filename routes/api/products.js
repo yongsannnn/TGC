@@ -8,8 +8,8 @@ router.get("/", async (req, res) => {
     res.send(allTeas)
 })
 
-router.post("/", async ( req,res)=> {
-    const selectedTea = await productDAL.getTeaById(req.body.tea_id)
+router.get("/:tea_id", async ( req,res)=> {
+    const selectedTea = await productDAL.getTeaById(req.params.tea_id)
     res.send(selectedTea)
 })
 
