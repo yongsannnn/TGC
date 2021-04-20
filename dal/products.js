@@ -43,7 +43,7 @@ const getTeaById = async (id) => {
         "id": id
     }).fetch({
         require: true,
-        withRelated: ["flavour"]
+        withRelated: ["flavour", "brand", "package", "origin", "type"]
     })
     return tea
 }

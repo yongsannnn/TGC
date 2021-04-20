@@ -8,6 +8,9 @@ router.get("/", async (req, res) => {
     res.send(allTeas)
 })
 
-
+router.post("/", async ( req,res)=> {
+    const selectedTea = await productDAL.getTeaById(req.body.tea_id)
+    res.send(selectedTea)
+})
 
 module.exports = router
