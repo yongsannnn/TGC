@@ -34,7 +34,7 @@ router.post("/login", async (req, res) => {
         let id = user.get("id")
         res.send({ accessToken, refreshToken, id })
     } else {
-        res.status(401)
+        res.status(204)
         res.send({
             "Error": "Invalid Email/Password"
         })
