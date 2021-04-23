@@ -1,3 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond&family=Lato&display=swap');
+
+#root{
+    font-family: 'Lato', sans-serif;
+}
+
+h1,h2,h3,h4,h5,h6{
+    font-family: 'Cormorant Garamond', serif;
+}
+.home-hero-img{
+    background-image: url("http://cdn.shopify.com/s/files/1/0311/4398/5197/files/AOT-Home-Banner-Teachable-041320_HH_1800x.jpg?v=1587056156");
+    height:95vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.logo-link{
+    display: flex;
+    height:40px;
+}
+
+.logo-title{
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    letter-spacing: 1px;
+}
+
+.hero-wrapper{
+    position: absolute; 
+    right: 10%;
+    top: 30%;
+}
+
+.hero-text{
+    margin-bottom:20px;
+}
 .nav-route{
     font-size: 10px;
     padding: 1em 0;
