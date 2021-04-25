@@ -89,3 +89,26 @@ h1,h2,h3,h4,h5,h6{
     color: #d6954b;
     text-decoration: none;
 }
+
+.uploadcare--widget__button_type_open {
+  background-color: #d6954b;
+}
+
+.uploadcare--widget__button_type_open:hover {
+  background-color: #777777;
+}
+
+.cta-wrapper{
+    display:flex;
+    justify-content: center;
+}
+
+.create-acc{
+    color:#d6954b;
+    text-decoration: underline;
+}
+
+.create-acc:hover{
+    text-decoration:none;
+    color:#777777;
+}
