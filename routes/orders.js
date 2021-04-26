@@ -67,7 +67,7 @@ router.get("/", checkIfAuthenticated, async (req, res) => {
             }
 
             if (form.data.user_id){
-                q = q.where("user_id", "=", form.data.order_id)
+                q = q.where("user_id", "=", form.data.user_id)
             }
 
             if (form.data.recipient_name) {
